@@ -5,6 +5,7 @@ const readlineInterface = readline.createInterface(
   process.stdout
 );
 
+//ask await function---
 function ask(questionText) {
   return new Promise((resolve, reject) => {
     readlineInterface.question(questionText, resolve);
@@ -12,7 +13,7 @@ function ask(questionText) {
 }
 
 start();
-
+//Start function to wrap game---
 async function start() {
   
   //while(the player is still in the game) {
@@ -22,6 +23,7 @@ async function start() {
   //yes = start from beginning
   //no = console.log(`Thanks for playing`)process.exit()
   
+  //Welcome message upon loading with instructions on game play-------------------------------------
   const welcomeMessage = `\n  The world has fallen victim to the virus. 
   It has mutated, changing it's host into mindless brain hungry zombies.
   You have been tasked with the quest to find the man who has the cure. 
@@ -41,22 +43,38 @@ async function start() {
 
 //-----------------------------------Establish global arrays-------------------------------------
 
+//Rooms list---
 let room = ['frontDoor', 'lobby', 'kitchen', 'elevatorHallway', 'firstFloorStairwell', 'elevator', 'secondFloorHallway', 'secondFloorStairwell', 'guestRoomOne', 'guestRoomTwo', 'guestRoomThree', 'exit',];
 
+//Valid actions allowed---
 let action = ['look', 'look at', 'read', 'go', 'go to', 'go through', 'walk', 'walk to', 'run', 'run to', 'hit', 'stab', 'fight', 'attack', 'punch', 'bite', 'kick', 'use', 'inspect', 'pick', 'pick up', 'grab', 'take', 'drop', 'smell', 'taste', 'lick', 'feel', 'touch', 'eat', 'drink', 'cry', 'sit', 'yell', 'yell at', 'scream', 'scream at', 'talk', 'talk to', ];
 
+//Valid directions---
 let direction = ['north', 'south', 'east', 'west',];
 
+//Movable inventory per room--- 
 let roomOneInventory = ['wood planks', 'elevator hallway key',];
 
 let roomTwoInventory = ['chef knife',];
 
+let roomThreeInventory = [];
+
+let roomFourInventory = [];
+
+let roomFiveInventory = [];
+
+let roomSixInventory = [];
+
 let roomSevenInventory = ['door key card',];
+
+let roomEightInventory = [];
 
 let roomNineInventory = ['backpack', 'notes', 'laptop',];
 
+//Player display action---
 let displayPlayerInventory = ('i');
 
+//Setting player as variable and giving inventory and starting location---
 let player = {
   playerInventory: [],
   currentLocation: 'front door',
@@ -64,11 +82,12 @@ let player = {
 
 //----------------------------------functions--------------------------------------------
  
+//Valid actions allowed function array---
  async function validAction(action) {'look', 'look at', 'read', 'go', 'go to', 'go through', 'walk', 'walk to', 'run', 'run to', 'hit', 'stab', 'fight', 'attack', 'punch', 'bite', 'kick', 'use', 'inspect', 'pick', 'pick up', 'grab', 'take', 'drop', 'smell', 'taste', 'lick', 'feel', 'touch', 'eat', 'drink', 'cry', 'sit', 'yell', 'yell at', 'scream', 'scream at', 'talk', 'talk to',
 
-
   validAction = doAction
- 
+
+ //Given action, response, and invalid command response---
   if (doAction === 'look') {
        await ask(`Look at what?`);
        if (response.toLowerCase().trim() = validDirection || validObject) {
@@ -440,12 +459,11 @@ if (doAction === 'talk to') {
 
 // }
 
+//Picking up an item---
   async function pickUpItem(itemToPickUp, fromArray, toArray,) {
 
-    console.log('test one')
-
+//If the rooms item array contains the item then remove item from room and move item to players inventory---
    if (fromArray.includes(itemToMove) && !toArray.includes(itemToMove)) {
-//     item in room inventory
       function ifRoomContains(selectedItem) {
         return itemToMove === selectedItem;
       }
@@ -461,9 +479,8 @@ if (doAction === 'talk to') {
     return false
   }
 
+  //If player inventory contains item then remove item from players inventory and move to current rooms inventory---
 async function dropItem(itemToDrop, fromArray, toArray) {
-
-//console.log()
 
   if (fromArray.includes(itemToMove) && !toArray.includes(itemToMove)) {
     // item in player inventory
@@ -492,7 +509,7 @@ async function dropItem(itemToDrop, fromArray, toArray) {
 //}
 //---------------------------------------classes------------------------------------------
 
-//   //all encompassing game board class
+//All encompassing game board class---
 
 class GameBoard {
   constructor(currentLocation) {
@@ -510,15 +527,17 @@ class GameBoard {
       this.guestRoomThree = guestRoomThree,
       This.exit = exit,
     ];
-
+//Starts player at front door---
     if (validLocation.includes(currentLocation)) {
-      this.currentLocation = currentLocation;
+      this.currentLocation = currentLocation; 
     } else {
       this.currentLocation = "frontDoor";
     }
   }
-  //-----------------------------------state machine for movement--------------------------------------------
 
+  //-----------------------------------state machine for movement-------------------------------------
+
+  //Allows player to move from current location to a valid location---
   enterState(newLocation) {
     if (this.canChangeTo(newLocation)) {
       this.currentLocation = newLocation;
@@ -541,6 +560,7 @@ class GameBoard {
      this.exit = exit;
   }
 
+//Locations valid movement---
   canChangeTo(newCurrentLocation) {
     let validMovement = {
       frontDoor: ["lobby"],
@@ -585,8 +605,8 @@ class GameBoard {
   }
 }
 
+//Logs location discription when entering a new location---
 let myLocation = new GameBoard("frontDoor");
-
  console.log(myLocation.currentLocation);
 // myLocation.enterState("lobby");
 
@@ -607,8 +627,9 @@ let myLocation = new GameBoard("frontDoor");
 
 
 
-   //--------------------------------------------individual room class-----------------------------------
+   //--------------------------------------------individual room class--------------------------------
 
+   //Class and constructor for front door--- 
   class FrontDoor {
    constructor(alley) {
    let roomInventory = [];
@@ -623,7 +644,7 @@ let myLocation = new GameBoard("frontDoor");
        this.dropable = dropable || false;
      }
      
-      //take item function
+      //Take item function---
      take() {
        if (this.takeable) {
          roomInventory.push(this.item);
@@ -634,35 +655,35 @@ let myLocation = new GameBoard("frontDoor");
        }
      }
 
-     //description function
+     //Description function---
      describe() {
        if (this.description) {
          return `${this.description}`;
        }
      }
 
-     //action function
+     //Action function---
      verb() {
        if (this.action) {
          return `${this.action}`;
        }
      }
 
-    //direction function
+    //Direction function---
     compass() {
       if (this.direction) {
         return `${this.description}`
       }
     }
 
-     //do action with item
+     //Do action with item---
      use() {
        if (this.item === playerInventory.includes && validAction) {
          return `${doAction()}`
        }
      }
 
-     //drop item function
+     //Drop item function---
      drop() {
        if (this.droppable) {
 playerInventory.push(this.item);
@@ -674,7 +695,7 @@ return `You dropped ${this.item}.`
      }
     }
 
-//roomDescription
+//RoomDescription---
    let north = new Direction(
      'north',
      undefined,
@@ -700,10 +721,12 @@ return `You dropped ${this.item}.`
     `An alley filling up with zombies that followed you from the lab.`,
     )
 
-//valid action
+//valid action---
 let validAction = new Action(
   
 )
+
+//------------------------------------------ Wire frame/ Story ideas / working out what needs to be------------------------------------------------------//
 
 //look
 //   'look'(north) = console.log(description);
@@ -781,12 +804,7 @@ let validAction = new Action(
 
 
 
-
-
-
-
-
-
+//Lobby class and constructor---
 
 //individual room class room one
 //class RoomOne {
@@ -836,7 +854,9 @@ let validAction = new Action(
 //stab zombie; you stab the zombie in the head, it spurts blood and falls over backwards over the coffee table.
 //if you don't have the knife in your inventory; you have no weapon to defend yourself and the zombie overtakes you. the end
  
-//}
+
+
+//Room two class and constructor---
  
 //individual room class room two
 //class RoomTwo {
@@ -883,7 +903,9 @@ let validAction = new Action(
 //go through door; enter lobby. 
 //if the front door wasn't barricaded with the planks of wood, 
 //then a zombie has managed the front door and is waiting for you in the lobby. 
-//}
+
+
+//Room three class and constructor---
  
 //individual room class room three
 //class RoomThree {
@@ -923,7 +945,9 @@ let validAction = new Action(
 //in the bottom right corner a strip of paper is stuck in the frame with the number '9758' written on it.
 //operate elevator; need code.
 //enter code; elevator door dings and opens, enter elevator.
-//}
+
+
+//Room four class and constructor---
  
 //individual room class room four
 //class RoomFour {
@@ -957,7 +981,10 @@ let validAction = new Action(
 //run away/ go through door; enter elevator hallway.
 //stab zombie; you stab the nearest zombie in the head. it goes limp and crumples over. the zombies keep coming. 
 //(loop three times then the zombies are too many for you to kill and they overwhelm you. the end)
-//}
+
+
+
+//Room five class and constructor---
  
 //individual room class room five
 //class RoomFive {
@@ -991,7 +1018,9 @@ let validAction = new Action(
 //look in any direction; give description
 //push up button; the elevator moves up to the second floor and the door opens exiting into the second floor hallway.
 //push the down arrow; the door opens; exiting to the first floor elevator hallway.
-//}
+
+
+//Room six class and constructor---
  
 //individual room class room six
 //class RoomSix {
@@ -1034,7 +1063,9 @@ let validAction = new Action(
 //exit door; unlocked, (exits building and ends game.))
 //push down arrow for elevator (the elevator door opens with a ding and you get into the elevator)
 // move to; east, west of second floor hallway. 
-//}
+
+
+//Room seven class and constructor---
  
 //individual room class room seven
 //class RoomSeven {
@@ -1082,7 +1113,9 @@ let validAction = new Action(
 //slides down the wall into a heap leaving a streak of blood completing the mosaic blood splatter that was already on the wall. 
 //pick up card; appears to be a room key card. you put it in your pocket.
 //go through door (enters second floor hallway).
-//}
+
+
+//Room eight class and constructor---
  
 //individual room class room eight
 //class RoomEight {
@@ -1115,7 +1148,7 @@ let validAction = new Action(
 //but you swear you hear the door giggle ever so softly.
  
  
-//}
+//Room nine class and constructor---
  
 //individual room class room nine
 //class RoomNine {
@@ -1160,7 +1193,9 @@ let validAction = new Action(
 //inspect desk; the draws are empty. the top of the desk is covered in paperwork.
 //inspect paperwork/ pick up paperwork; upon a quick glance these are the scientist notes on how to build the fomula.
 //you gather the papers into a neat stack and slide them in the backpack.
-//}
+
+
+//Room ten class and constructor---
  
 //individual room class room ten
 //class RoomTen {
@@ -1194,7 +1229,9 @@ let validAction = new Action(
 //run away/ go through door; enter second floor hallway.
 //stab zombie; you stab the nearest zombie in the head. it goes limp and crumples over. the zombies keep coming. 
 //(loop three times then the zombies are too many for you to kill and they overwhelm you. the end) 
-//}
+
+
+//Room eleven class and constructor---
  
 //individual room class room eleven
 //class RoomEleven {
